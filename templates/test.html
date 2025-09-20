@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h2>Flask API Tester</h2>
+    <button onclick="register()">Register User</button>
+    <button onclick="login()">Login User</button>
+    <button onclick="getProducts()">Get Products</button>
+    <pre id="output"></pre>
+
+    <script>
+    function register() {
+        fetch("http://127.0.0.1:5000/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: "testuser",
+                email: "test@test.com",
+                password: "1234"
+            }),
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => document.getElementById("output").textContent = JSON.stringify(data, null, 2))
+        .catch(err => console.error(err));
+    }
+
+    function login() {
+        fetch("http://127.0.0.1:5000/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: "testuser",
+                password: "1234"
+            }),
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => document.getElementById("output").textContent = JSON.stringify(data, null, 2))
+        .catch(err => console.error(err));
+    }
+
+    function getProducts() {
+        fetch("http://127.0.0.1:5000/api/products", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => document.getElementById("output").textContent = JSON.stringify(data, null, 2))
+        .catch(err => console.error(err));
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GROCERY STORE</title>
+
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+	<!-- Code for font awesome cdn -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+	<!-- Code for linking css file -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+	<!-- link for swipping in products -->
+	<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+</head>
+
+<body>
+
+
+
+<!-- header section -->
+<header class="header">
+	<a href="#" class="logo"> <i class=" fa fa-shopping-basket"></i>FRESH BASKET</a>
+
+<nav class="navbar">
+	<a href="#home">Home</a>
+	<a href="#features">Features</a>
+	<a href="#products">Products</a>
+	<a href="#categories">Categories</a>
+	<a href="#review">Review</a>
+	<a href="#blogs">Blogs</a>
+</nav>
+
+<div class="icons">
+  <i class="fa fa-bars" id="menu-btn"></i>
+  <i class="fa fa-search" id="search-btn"></i>
+  <i class="fa fa-shopping-cart" id="cart-btn"></i>
+  <i class="fa fa-user" id="login-btn"></i>
+</div>
+
+<form action="" class="search-form">
+    <input type="search" id="search-box" placeholder="Search Here...." >
+    <button type="button" id="search-btn" class="fa fa-search"></button>
+</form>
+
+<div  class="shopping-cart">
+		<div class="box">
+			<i class="fa fa-trash"></i>
+			<img src="{{ url_for('static', filename='images/cart-img-1.png') }}" alt="Cart">
+			<div class ="content">
+					<h3>WaterMelon</h3>
+					<span class="price">$5.99/-</span>
+					<span class="quantity"> Qty : 1</span>
+			</div>
+		</div>
+
+<div class="box">
+			<i class="fa fa-trash"></i>
+			<img src="{{ url_for('static', filename='images/cart-img-3.png') }}" alt="Cart">
+			<div class ="content">
+					<h3>Chicken</h3>
+					<span class="price">$7.99/-</span>
+					<span class="quantity"> Qty : 1</span>
+			</div>
+		</div>
+
+<div class="box">
+			<i class="fa fa-trash"></i>
+			<img src="{{ url_for('static', filename='images/cart-img-2.png') }}" alt="Cart">
+			<div class ="content">
+					<h3>Onion</h3>
+					<span class="price">$4.99/-</span>
+					<span class="quantity"> Qty : 2</span>
+			</div>
+		</div>
+
+<div class ="total"> Total : $18.97/- </div>
+<a href="#" class="btn">Checkout</a>
+</div>
+
+<form method="POST" action="{{ url_for('login') }}" class="login-form">
+  <h3>Login now</h3>
+
+  <input type="hidden" name="action" value="login">
+
+  <input type="email" name="email" placeholder="your email" class="box" required>
+  <input type="password" name="password" placeholder="your password" class="box" required>
+
+  <p>Forget Your Password <a href="#"> Click here</a></p>
+  <p>Don't Have An Account? <a href="#signup">Create Now</a></p>
+
+  <input type="submit" value="Login Now" class="btn">
+</form>
+
+<!-- Signup Form -->
+<form method="POST" action="{{ url_for('index') }}" id="signup" class="login-form">
+  <h3>Sign Up</h3>
+
+  <input type="hidden" name="action" value="signup">
+
+  <input type="text" name="name" placeholder="your name" class="box" required>
+  <input type="email" name="email" placeholder="your email" class="box" required>
+  <input type="password" name="password" placeholder="your password" class="box" required>
+
+  <input type="submit" value="Sign Up" class="btn">
+</form>
+
+{% if session.user_id %}
+    <h2>Welcome, {{ user_name }}!</h2>
+    <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+{% endif %}
+
+<!--modify after backend -->
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul style="color: green; font-weight: bold;">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<!-- error message for login failure -->
+{% if error %}
+	<p style="color:red;font-weight: bold;">{{error}}</p>
+{% endif %}
+
+
+</header>
+
+<!-- home section -->
+<section class="home" id="home">
+	<div class="content">
+		<h3><span>Fresh <b>Basket</b></span> - Where Fresh Meets Affordable</h3>
+		<p>Fresh Basket offers top-quality groceries, fast delivery, and unbeatable prices</p>
+		<p> - all in one place</p>
+
+		<a href="#" class="btn">Shop now</a>
+	</div>
+</section>
+
+<!-- Features section -->
+<section class="features" id="features">
+	<h1 class="heading"> Our <span>Features</span></h1>
+
+	<div class="box-container">
+		<!-- Feature 1 -->
+		<div class="box">
+			<img src="{{ url_for('static', filename='images/feature2.jpg') }}" alt="Feature">
+			<h3>Quality You Can Trust</h3>
+			<p> Every product in our store is carefully chacked for quality,so you get only the best-fresh,safe and woth every penny.</p>
+			<a href="#" class="btn">Read more</a>
+		</div>
+
+		<!-- Feature 2 -->
+	<div class="box">
+			<img src="{{ url_for('static', filename='images/feature-img-2.png') }}" alt="Feature">
+			<h3>Free Delivery</h3>
+			<p> Enjoy fast and free delivery right to your doorstep, saving your time and effort. Shop from the comfort of your home and let us do the rest .</p>
+			<a href="#" class="btn">Read more</a>
+	</div>
+
+		<!-- Feature 3 -->
+	<div class="box">
+			<img src="{{ url_for('static', filename='images/feature-img-3.png') }}">
+			<h3>Easy Payments</h3>
+			<p> Pay your way with multiple payment options including cards, UPI, and wallets - safe, secure, and hassele-free every time .</p>
+			<a href="#" class="btn">Read more</a>
+	</div>
+ </div>
+<br>
+
+ <div class="box-container">
+ 		<!-- Feature 4 -->
+	<div class="box">
+			<img src="{{ url_for('static', filename='images/bag.jpg') }}">
+			<h3>Zero Plastic packaging</h3>
+			<p> Eco-friendly,resulable, and planet-friendly deleveries, we help reduce waste and protect the enviornment - so every purchase you make in a step towards a cleaner, greener future.</p>
+			<a href="#" class="btn">Read more</a>
+	</div>
+
+		<!-- Feature 5 -->
+	<div class="box">
+			<img src="{{ url_for('static', filename='images/delivery.png') }}">
+			<h3> Same-Day Delivery</h3>
+			<p> Get your groceries delivered the very same day you order. Fast, reliable, and convenient—perfect for last-minute needs.</p>
+			<a href="#" class="btn">Read more</a>
+	</div>
+
+	  <!-- Feature 6 -->
+	<div class="box">
+			<img src="{{ url_for('static', filename='images/hygine.png') }}">
+			<h3>Hygiene Guaranteed</h3>
+			<p> Every item is packed and handled with strict hygiene protocols, ensuring your safety and peace of mind.</p>
+			<a href="#" class="btn">Read more</a>
+	</div>
+ </div>
+</section>
+
+<!-- Products section -->
+<section class="products" id="products">
+	<h1 class="heading">Our <span>Products</span></h1>
+
+	<div  class="swiper product-slider">
+		<div class="swiper-wrapper">
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/capccicum.png') }}">
+				<h1> Capsicum</h1>
+				<select>
+					<option value="250">250g -₹25/-</option>
+					<option value="500">500g -₹50/-</option>
+					<option value="1000">1 kg -₹100/-</option>
+				</select>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>
+				<a href="" class="btn">Add to cart</a>
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/onion.png') }}">
+				<h1> Onion</h1>
+				<select>
+					<option value="250">250g -₹25/-</option>
+					<option value="500">500g -₹50/-</option>
+					<option value="1000">1 kg -₹100/-</option>
+				</select>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>
+				<a href="" class="btn">Add to cart</a>
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/tomato.png') }}">
+				<h1> Tomato</h1>
+				<select>
+					<option value="250">250g -₹25/-</option>
+					<option value="500">500g -₹50/-</option>
+					<option value="1000">1 kg -₹100/-</option>
+				</select>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>
+				<a href="" class="btn">Add to cart</a>
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/cauliflower.png') }}">
+				<h1> Cauliflower</h1>
+				<select>
+					<option value="250">250g -₹25/-</option>
+					<option value="500">500g -₹50/-</option>
+					<option value="1000">1 kg -₹100/-</option>
+				</select>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>
+				<a href="" class="btn">Add to cart</a>
+			</div>
+		</div>
+	</div>  
+
+	<div  class="swiper product-slider">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/banana.png') }}">
+				<h1> Banana</h1>
+				<select>
+					<option value="250">250g -₹25/-</option>
+					<option value="500">500g -₹50/-</option>
+					<option value="1000">1 kg -₹100/-</option>
+				</select>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>
+				<a href="" class="btn">Add to cart</a>
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/apple.webp') }}">
+				<h1> Apple</h1>
+				<select>
+					<option value="500">4 pcs - (Approx. 500 g - 600 g )</option>
+					<option value="1000">8 pcs - (Approx. 1000 g - 1200 g )</option>
+				</select>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+				</div>
+				<a href="" class="btn">Add to cart</a>
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/kiwi.webp') }}">
+				<h1> KIWI</h1>
+				<select>
+					<option value="250">3 pcs - (Approx. 220 g - 260 g ) -₹157/-	</option>
+					<option value="500">6 pcs - (Approx. 440 g - 520 g ) -₹300/-	</option>
+				</select>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>
+				<a href="" class="btn">Add to cart</a>
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/blueberry.webp') }}">
+				<h1> Blueberry</h1>
+				<select>
+					<option value="250">250g -₹25/-</option>
+					<option value="500">500g -₹50/-</option>
+					<option value="1000">1 kg -₹100/-</option>
+				</select>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+				</div>
+				<a href="" class="btn">Add to cart</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<!--Categories section -->
+<section class="categories" id="categories">
+	<h1 class="heading"> Product <span>Categories</span></h1>
+
+	<div class="box-container">
+		<div class="box">
+			<img src="{{ url_for('static', filename='images/cat-1.png') }}">
+			<h3>Vegetables</h3>
+			<p>Upto 45% Off</p>
+			<a href="#" class="btn">Shop now</a>
+		</div>
+
+		<div class="box">
+			<img src="{{ url_for('static', filename='images/cat-2.png') }}">
+			<h3>Fresh Fruits</h3>
+			<p>Upto 35% Off</p>
+			<a href="#" class="btn">Shop now</a>
+		</div>
+
+		<div class="box">
+			<img src="{{ url_for('static', filename='images/cat-3.png') }}">
+			<h3>Diary products</h3>
+			<p>Upto 20% Off</p>
+			<a href="#" class="btn">Shop now</a>
+		</div>
+
+		<div class="box">
+			<img src="{{ url_for('static', filename='images/cat-4.png') }}">
+			<h3>Fresh Meat</h3>
+			<p>Upto 25% Off</p>
+			<a href="#" class="btn">Shop now</a>
+		</div>
+	</div>
+</section>
+<!--Categories section -->
+
+<!--Review section -->
+<section class="review" id="review">
+	<h1 class="heading"> Customer's <span>Review</span></h1>
+
+	<div class=" swiper review-slider">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/arvind singh.jpg') }}">
+				<p>Super quick delivery! Got all my groceries within 15 minutes .Evrything was fresh and nicely packed.Highly recommend Fresh Basket!</p>
+				<h3>Arvind Singh</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+				</div>				
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/sonam.jfif') }}">
+				<p>Love the zero plastic packaging idea. Fruits and veggies were crisp and fresh, felt like straight from the farm.</p>
+				<h3>Sonam Patil</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+				</div>				
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/sunny.webp') }}">
+				<p>Very user-friendly app and smooth payment process. I don’t need to go out anymore, Fresh Basket has everything I need.</p>
+				<h3>Sunny Singh</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+				</div>				
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/vinod.jpg') }}">
+				<p>Great quality products and fast delivery. Just wish there were more seasonal fruits available.</p>
+				<h3>Vinod Kumar</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>				
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/harpal.jpg') }}">
+				<p>The delivery was quick but the bread was slightly close to expiry. Still happy with the service overall.</p>
+				<h3>Harpal Bedi</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>				
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/malti khurana.jfif') }}">
+				<p>Good offers and discounts, but sometimes items go out of stock too quickly.</p>
+				<h3>Malti Khurana</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>				
+				</div>				
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/jay.jfif') }}">
+				<p>Delivery took 30 minutes instead of 10. Quality was fine but not as promised.</p>
+				<h3>Jay Patel</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>				
+				</div>				
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/mallikha.jfif') }}">
+				<p>The vegetables were okay but not as fresh as last time. Needs consistency.</p>
+				<h3>Mallikha Singh</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>				
+					<i class="fas fa-star-half"></i>
+				</div>				
+			</div>
+
+			<div class="swiper-slide box">
+				<img src="{{ url_for('static', filename='images/basant.jfif') }}">
+				<p>Decent service, but payment failed once and had to retry. Needs improvement in reliability.</p>
+				<h3>Basant Bhatt</h3>
+				<div class="stars">
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star"></i>
+					<i class="fas fa-star-half"></i>
+				</div>				
+			</div>
+		</div>
+	</div>		
+</section>
+<!--Review section -->
+
+<!--Blogs section -->
+<section class="blogs" id="blogs">
+	<h1 class="heading"> Our <span>Blogs</span></h1>
+
+	<div class="box-container">
+		<div class="box">
+			<img src="{{ url_for('static', filename='images/blog-1.jpg') }}">
+			<div class="content">
+				<div class="icons">
+					<a href="#"><i class="fa fa-user"> </i>By User</a>
+					<a href="#"><i class="fa fa-calendar"> </i>1st JUNE, 2023</a>
+				</div>
+				<h3>The Benefits of Eating Organic Vegetables and Fruits</h3>
+				<p>Organic produce is grown without harmful pesticides and chemicals. At Fresh Basket, we bring you farm-fresh veggies...</p>
+				<a href="/blog/1" class="btn">Read More</a> 
+			</div>
+		</div>
+
+		<div class="box">
+			<img src="{{ url_for('static', filename='images/blog-2.jpg') }}">
+			<div class="content">
+				<div class="icons">
+					<a href="#"><i class="fa fa-user"> </i>By User</a>
+					<a href="#"><i class="fa fa-calendar"> </i>27st JULY, 2023</a>
+				</div>
+				<h3>Smart Grocery Shopping Tips for Busy Families</h3>
+				<p>Grocery shopping can be time-consuming, but Fresh Basket helps you save time and money with express delivery...</p>
+				<a href="/blog/2" class="btn">Read More</a>
+			</div>
+		</div>
+
+		<div class="box">
+			<img src="{{ url_for('static', filename='images/blog-3.jpg') }}">
+			<div class="content">
+				<div class="icons">
+					<a href="#"><i class="fa fa-user"> </i>By User</a>
+					<a href="#"><i class="fa fa-calendar"> </i>27st JULY, 2023</a>
+				</div>
+				<h3>Why Zero-Plastic Packaging Matters</h3>
+				<p>Plastic pollution is one of the biggest challenges of our time. At Fresh Basket, we are committed to eco-friendly...</p>
+				<a href="/blog/2" class="btn">Read More</a>
+			</div>
+		</div>
+	</div>
+</section>
+<!--Blogs section -->
+
+<br>
+
+<!--Footer section -->
+<section class="footer">
+	<div class="box-container">
+		<div class="box">
+				<h3>Fresh <i class="fa fa-shopping-basket"></i></h3>
+				<p>Feel Free To Follow Us On Our Social Media Handlers AlL The Links Are Giver Below.</p>
+				<div class="share">
+					<a href="#" class="fab fa-facebook"></a>
+					<a href="#" class="fab fa-twitter"></a>
+					<a href="#" class="fab fa-instagram"></a>
+					<a href="#" class="fab fa-linkedin"></a>
+				</div>
+		</div>
+
+		<div class="box">
+				<h3>Contact Info </h3>
+				<a href="#" class="links"><i class="fa fa-phone"></i> +91 9876544321</a>	
+				<a href="#" class="links"><i class="fa fa-phone"></i> +91 9876544321</a>	
+				<a href="#" class="links"><i class="fa fa-envelope"></i> online@Freshbasket.com</a>	
+				<a href="#" class="links"><i class="fa fa-map-marker"></i> Mumbai ,Maharastra -400074</a>				
+		</div>			
+
+		<div class="box">
+				<h3>Quick Links </h3>
+				<a href="#" class="links"><i class="fa fa-arrow-right"></i> Home</a>	
+				<a href="#" class="links"><i class="fa fa-arrow-right"></i> Feaures</a>	
+				<a href="#" class="links"><i class="fa fa-arrow-right"></i> Products</a>	
+				<a href="#" class="links"><i class="fa fa-arrow-right"></i> Categories</a>	
+				<a href="#" class="links"><i class="fa fa-arrow-right"></i> Review</a>	
+				<a href="#" class="links"><i class="fa fa-arrow-right"></i> Blogs</a>								
+		</div>	
+
+		<div class="box">
+				<h3>Newsletter </h3>
+				<p>Subscribe For Latest Updates</p>
+				<input type="email" placeholder="Your Email" class="email">
+				<input type="submit" value="Subscribe" class="btn">
+				<img src="{{ url_for('static', filename='images/payment.png') }}" class="payment-img">
+		</div>	
+	</div>
+<div class="credit">Created By <span>Divyani Patil</span></div>
+</section>
+<!--Footer section -->
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="{{ url_for('static', filename='js/api.js') }}?v=2"></script>
+
+</body>
+</html>

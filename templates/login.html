@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-page">
+    <div class="form-container">
+        <h2>Welcome to Grocery Store</h2>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flash-success">
+              {% for msg in messages %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <!-- Error message -->
+        {% if error %}
+          <p class="flash-error">{{ error }}</p>
+        {% endif %}
+
+        <!-- Signup Form -->
+        <div class="form-box">
+            <h3>Create Account</h3>
+            <form method="POST">
+                <input type="hidden" name="action" value="signup"> <!-- FIXED -->
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <!-- Login Form -->
+        <div class="form-box">
+            <h3>Login</h3>
+            <form method="POST">
+                <input type="hidden" name="action" value="login">
+                <input type="email" name="email" placeholder="Your Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
