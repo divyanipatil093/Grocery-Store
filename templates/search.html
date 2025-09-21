@@ -1,0 +1,11 @@
+<h2>Search results for "{{ query }}"</h2>
+
+{% if results %}
+    <ul>
+    {% for product in results %}
+        <li>{{ product[1] }} - ₹{{ product[3] }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No product found for "{{ query }}"</p>
+{% endif %}

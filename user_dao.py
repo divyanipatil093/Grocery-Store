@@ -1,16 +1,31 @@
-from sql_connection import get_sql_connection
+from db import get_db # CHANGED
+from werkzeug.security import generate_password_hash, check_password_hash
+import mysql.connector
 
 def register_user(name, email, password):
-    conn = get_sql_connection()
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO users (name, email, password) VALUES (%s, %s, %s)", (name, email, password))
-    conn.commit()
-    cursor.close()
+    db = get_db()
+    cursor = db.cursor()
+    try:
+        hashed_password = generate_password_hash(password)
+        # Use %s placeholders for MySQL
+        query = "INSERT INTO users (name, email, password) VALUES (%s, %s, %s)"
+        cursor.execute(query, (name, email, hashed_password))
+        db.commit()
+        return True
+    except mysql.connector.IntegrityError:
+        return False
+    finally:
+        cursor.close()
 
 def login_user(email, password):
-    conn = get_sql_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT user_id, name FROM users WHERE email=%s AND password=%s", (email, password))
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    
+    query = "SELECT user_id, name, password FROM users WHERE email = %s"
+    cursor.execute(query, (email,))
     user = cursor.fetchone()
     cursor.close()
-    return user
+    
+    if user and check_password_hash(user["password"], password):
+        return (user["user_id"], user["name"]) 
+    return None

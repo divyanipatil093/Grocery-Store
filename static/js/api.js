@@ -264,9 +264,81 @@ class CartManager {
     }
 }
 
-// Order Management
-class OrderManager {
-    static showCheckoutForm() {
-        if (!Auth.isLoggedIn()) {
-            showMessage('Please login to place an order', 'error');
-            return;
+// ... existing code ...
+// Add this at the bottom or inside a main initialization function
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Authentication Form Handler ---
+    const authForm = document.getElementById('auth-form');
+    const authAction = document.getElementById('auth-action');
+    const authName = document.getElementById('auth-name');
+    const signupLink = document.getElementById('signup-link');
+    const loginLink = document.getElementById('login-link');
+    const authSubmitBtn = document.getElementById('auth-submit-btn');
+
+    // Toggle between login and signup view
+    if (signupLink) {
+        signupLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            authAction.value = 'register';
+            authName.style.display = 'block';
+            authSubmitBtn.value = 'Sign Up';
+            document.getElementById('toggle-signup').style.display = 'none';
+            document.getElementById('toggle-login').style.display = 'block';
+            document.getElementById('forgot-password').style.display = 'none';
+        });
+    }
+
+    if (loginLink) {
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            authAction.value = 'login';
+            authName.style.display = 'none';
+            authSubmitBtn.value = 'Login Now';
+            document.getElementById('toggle-signup').style.display = 'block';
+            document.getElementById('toggle-login').style.display = 'none';
+            document.getElementById('forgot-password').style.display = 'block';
+        });
+    }
+
+    if (authForm) {
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const action = authAction.value;
+
+            try {
+                if (action === 'login') {
+                    await Auth.login(email, password); // Note: api.js uses 'username' for email
+                } else if (action === 'register') {
+                    const name = authName.value;
+                    await Auth.register(name, email, password);
+                    // Automatically switch to login form after successful registration
+                    if (document.querySelector('.login-form').classList.contains('active')) {
+                        loginLink.click();
+                    }
+                }
+                // Close the form on success
+                document.querySelector('.login-form').classList.remove('active'); 
+                window.location.reload(); // Refresh to show user details
+            } catch (error) {
+                // Error handled by makeRequest/showMessage
+            }
+        });
+    }
+    
+    // Initial product load (optional, but good practice)
+    // ProductManager.getFeaturedProducts().then(products => {
+    //     const productSliderContainer = document.querySelector('.product-slider .swiper-wrapper');
+    //     if (productSliderContainer) {
+    //         // You'd need a custom render function here to insert into your swiper structure
+    //         // For now, it is commented out.
+    //     }
+    // });
+    
+    // Initialize the cart display
+    if (Auth.isLoggedIn()) {
+        CartManager.updateCartDisplay();
+    }
+});

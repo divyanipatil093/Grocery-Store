@@ -15,123 +15,67 @@
 
 	<!-- link for swipping in products -->
 	<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-
-
-<!-- header section -->
 <header class="header">
-	<a href="#" class="logo"> <i class=" fa fa-shopping-basket"></i>FRESH BASKET</a>
+    <a href="#" class="logo"> <i class=" fa fa-shopping-basket"></i>FRESH BASKET</a>
 
-<nav class="navbar">
-	<a href="#home">Home</a>
-	<a href="#features">Features</a>
-	<a href="#products">Products</a>
-	<a href="#categories">Categories</a>
-	<a href="#review">Review</a>
-	<a href="#blogs">Blogs</a>
-</nav>
+    <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#products">Products</a>
+        <a href="#categories">Categories</a>
+        <a href="#review">Review</a>
+        <a href="#blogs">Blogs</a>
+    </nav>
 
-<div class="icons">
-  <i class="fa fa-bars" id="menu-btn"></i>
-  <i class="fa fa-search" id="search-btn"></i>
-  <i class="fa fa-shopping-cart" id="cart-btn"></i>
-  <i class="fa fa-user" id="login-btn"></i>
-</div>
+    <div class="icons">
+      <i class="fa fa-bars" id="menu-btn"></i>
+      <i class="fa fa-search" id="search-btn"></i>
+      <i class="fa fa-shopping-cart" id="cart-btn"></i>
+      
+      {% if session.user_id %}
+        <div class="user-info">
+          
+          <a href="{{ url_for('logout') }}" class="btn logout-btn">Logout</a>
+        </div>
+      {% else %}
+        <i class="fa fa-user" id="login-btn"></i>
+      {% endif %}
+    </div>
 
-<form action="" class="search-form">
-    <input type="search" id="search-box" placeholder="Search Here...." >
-    <button type="button" id="search-btn" class="fa fa-search"></button>
-</form>
+    <form action="/search"  method="GET"  class="search-form">
+        <input type="search" id="search-box" name="query" placeholder="Search Here...." required>
+        <button type="submit" class="fa fa-search" id="search-btn-submit"></button> </form>
 
-<div  class="shopping-cart">
-		<div class="box">
-			<i class="fa fa-trash"></i>
-			<img src="{{ url_for('static', filename='images/cart-img-1.png') }}" alt="Cart">
-			<div class ="content">
-					<h3>WaterMelon</h3>
-					<span class="price">$5.99/-</span>
-					<span class="quantity"> Qty : 1</span>
-			</div>
-		</div>
+    <div class="shopping-cart">
+        <div class="total"> Total : $0.00 </div>
+        <a href="#" class="btn">Checkout</a>
+    </div>
 
-<div class="box">
-			<i class="fa fa-trash"></i>
-			<img src="{{ url_for('static', filename='images/cart-img-3.png') }}" alt="Cart">
-			<div class ="content">
-					<h3>Chicken</h3>
-					<span class="price">$7.99/-</span>
-					<span class="quantity"> Qty : 1</span>
-			</div>
-		</div>
-
-<div class="box">
-			<i class="fa fa-trash"></i>
-			<img src="{{ url_for('static', filename='images/cart-img-2.png') }}" alt="Cart">
-			<div class ="content">
-					<h3>Onion</h3>
-					<span class="price">$4.99/-</span>
-					<span class="quantity"> Qty : 2</span>
-			</div>
-		</div>
-
-<div class ="total"> Total : $18.97/- </div>
-<a href="#" class="btn">Checkout</a>
-</div>
-
-<form method="POST" action="{{ url_for('login') }}" class="login-form">
-  <h3>Login now</h3>
-
-  <input type="hidden" name="action" value="login">
-
-  <input type="email" name="email" placeholder="your email" class="box" required>
-  <input type="password" name="password" placeholder="your password" class="box" required>
-
-  <p>Forget Your Password <a href="#"> Click here</a></p>
-  <p>Don't Have An Account? <a href="#signup">Create Now</a></p>
-
-  <input type="submit" value="Login Now" class="btn">
-</form>
-
-<!-- Signup Form -->
-<form method="POST" action="{{ url_for('index') }}" id="signup" class="login-form">
-  <h3>Sign Up</h3>
-
-  <input type="hidden" name="action" value="signup">
-
-  <input type="text" name="name" placeholder="your name" class="box" required>
-  <input type="email" name="email" placeholder="your email" class="box" required>
-  <input type="password" name="password" placeholder="your password" class="box" required>
-
-  <input type="submit" value="Sign Up" class="btn">
-</form>
-
-{% if session.user_id %}
-    <h2>Welcome, {{ user_name }}!</h2>
-    <a href="{{ url_for('logout') }}" class="btn">Logout</a>
-{% endif %}
-
-<!--modify after backend -->
-<!-- Flash Messages -->
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul style="color: green; font-weight: bold;">
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
-<!-- error message for login failure -->
-{% if error %}
-	<p style="color:red;font-weight: bold;">{{error}}</p>
-{% endif %}
-
-
+    <form method="POST" action="" class="login-form" id="auth-form"> 
+      <h3>Login / Sign Up</h3>
+    
+      <input type="hidden" name="action" id="auth-action" value="login"> 
+    
+      <input type="text" name="name" id="auth-name" placeholder="your name" class="box" style="display: none;"> 
+      
+      <input type="email" name="email" id="auth-email" placeholder="your email" class="box" required>
+      <input type="password" name="password" id="auth-password" placeholder="your password" class="box" required>
+    
+      <p id="forgot-password">Forget Your Password <a href="#"> Click here</a></p>
+      <p id="toggle-signup">Don't Have An Account? <a href="#" id="signup-link">Create Now</a></p>
+      <p id="toggle-login" style="display:none;">Already Have An Account? <a href="#" id="login-link">Login</a></p>
+    
+      <input type="submit" value="Login Now" class="btn" id="auth-submit-btn">
+    </form>
 </header>
+
 
 <!-- home section -->
 <section class="home" id="home">
