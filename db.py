@@ -2,13 +2,15 @@
 import mysql.connector
 # Removed 'pooling' as it wasn't used
 from flask import g
+import os  # <-- Import the os library
+from dotenv import load_dotenv
 
 # --- MySQL Configuration ---
 MYSQL_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'Mysql@2006!', # <-- Verify this is correct
-    'database': 'grocery_db', 
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_NAME'),
 }
 
 def get_db():
