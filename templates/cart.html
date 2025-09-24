@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Additional basic styles for the cart page */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f7f7f7;
+        }
+
+        .total-row {
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+
+        .remove-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .remove-btn:hover {
+            background-color: #da190b;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Your Shopping Cart</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if cart and cart['items'] %}
+
+            {% for item in cart['items'] %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>₹{{ "%.2f"|format(item.price) }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ "%.2f"|format(item.subtotal) }}</td>
+                <td>
+                    <button class="remove-btn" data-product-id="{{ item.product_id }}">Remove</button>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr class="total-row">
+                <td colspan="3">Grand Total</td>
+                <td>₹{{ "%.2f"|format(cart.total) }}</td>
+                <td></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">Your cart is empty.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <br>
+    <div class="cart-actions" style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('home') }}" class="btn">Continue Shopping</a>
+        <button id="checkout-btn" class="btn" style="margin-left: 15px; background-color: #27ae60;">Proceed to
+            Payment</button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const removeButtons = document.querySelectorAll('.remove-btn');
+            const checkoutButton = document.getElementById('checkout-btn');
+
+            removeButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const productId = event.target.dataset.productId;
+
+                    if (confirm('Are you sure you want to remove this item?')) {
+                        try {
+                            // Use the function from api.js to call the backend
+                            await CartManager.removeFromCart(productId);
+
+                            // Reload the page to show the updated cart
+                            window.location.reload();
+                        } catch (error) {
+                            console.error('Failed to remove item:', error);
+                            showMessage('Could not remove item. Please try again.', 'error');
+                        }
+                    }
+                });
+            });
+            if (checkoutButton) {
+                checkoutButton.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    // This function is already defined in api.js and handles the entire payment flow
+                    OrderManager.checkout();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

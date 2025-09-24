@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Manage Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .admin-container { padding: 12rem 5%; }
+        .admin-form { background: #fff; padding: 2rem; border-radius: .5rem; box-shadow: var(--box-shadow); margin-bottom: 3rem; }
+        .admin-form .flex { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+        .admin-form .inputBox { flex: 1 1 40rem; }
+        .admin-form span { font-size: 1.7rem; color: var(--light-color); }
+        .admin-form .box { width: 100%; border-radius: .5rem; padding: 1.2rem 1.4rem; font-size: 1.7rem; margin-top: 1rem; background: #eee; }
+        .product-display table { width: 100%; text-align: center; }
+        .product-display th { padding: 1.2rem; font-size: 1.7rem; background: var(--green); color: #fff; }
+        .product-display td { padding: 1.2rem; font-size: 1.7rem; border-bottom: var(--border); }
+        .product-display .btn:hover { background: var(--orange); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="{{ url_for('home') }}" class="logo"><i class="fa fa-shopping-basket"></i> FRESH BASKET ADMIN</a>
+        <nav class="navbar"><a href="{{ url_for('home') }}">Back to Site</a></nav>
+    </header>
+
+    <div class="admin-container">
+        <section class="admin-form">
+            <form id="product-form">
+                <h3>Add a New Product</h3>
+                <input type="hidden" id="product-id" name="product_id">
+                <div class="flex">
+                    <div class="inputBox">
+                        <span>Product Name</span>
+                        <input type="text" class="box" required placeholder="Enter product name" id="product-name">
+                    </div>
+                    <div class="inputBox">
+                        <span>Product Price</span>
+                        <input type="number" class="box" required placeholder="Enter product price" id="product-price">
+                    </div>
+                    <div class="inputBox">
+                        <span>Product Stock</span>
+                        <input type="number" class="box" required placeholder="Enter stock quantity" id="product-stock">
+                    </div>
+                    <div class="inputBox" style="flex: 1 1 100%;">
+                        <span>Product Description</span>
+                        <textarea class="box" required placeholder="Enter product description" id="product-description" cols="30" rows="5"></textarea>
+                    </div>
+                </div>
+                <input type="submit" value="Add Product" class="btn" id="submit-btn">
+                <a href="#" class="btn" id="cancel-edit-btn" style="display: none;">Cancel Edit</a>
+            </form>
+        </section>
+
+        <section class="product-display">
+            <h1 class="heading" style="margin-bottom: 2rem;">Your <span>Products</span></h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="product-list">
+                    </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+</body>
+</html>

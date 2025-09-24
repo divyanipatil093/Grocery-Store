@@ -837,3 +837,26 @@ section
         font-size: 2.5rem;
     }
 }
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--green); /* Use your theme color for consistency */
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background-color: var(--green);
+    color: #fff;
+}
